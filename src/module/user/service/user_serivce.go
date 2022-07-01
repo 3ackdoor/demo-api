@@ -5,6 +5,7 @@ import (
 
 	"github.com/3ackdoor/go-demo-api/src/module/user/converter"
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
+	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 	"github.com/3ackdoor/go-demo-api/src/module/user/repository"
 	"github.com/3ackdoor/go-demo-api/src/util"
 	"gorm.io/gorm"
@@ -16,7 +17,7 @@ type UserService interface {
 	GetUserById(string) dto.UserModel
 	CreateUser(dto.UserCreationRequest) dto.UserModel
 	UpdateUserById(string, dto.UserUpdationRequest) dto.UserModel
-	DeleteUserById(string) bool
+	DeleteUserById(string) dto.UserModel
 }
 
 type UserServiceImpl struct {
@@ -70,7 +71,13 @@ func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequ
 	return resp
 }
 
-func (u *UserServiceImpl) DeleteUserById(id string) bool {
-	log.Printf("args: %v", id)
-	return true
+func (u *UserServiceImpl) DeleteUserById(id string) dto.UserModel {
+	idVal := util.ConvertStringToUint(id)
+
+	user := new(entity.User)
+	user.ID = idVal
+	u.UserRepository.Delete(user)
+
+	resp := converter.ConvertUserEntityToUserModel(user)
+	return resp
 }
