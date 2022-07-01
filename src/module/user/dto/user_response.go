@@ -12,7 +12,7 @@ type UserModel struct {
 	CreatedAt time.Time      `json:"createdAt"`
 	CreatedBy string         `json:"createdBy"`
 	UpdatedAt time.Time      `json:"updatedAt"`
-	UpdatedBy string         `json:"UpdatedBy"`
+	UpdatedBy string         `json:"updatedBy"`
 	DeletedAt gorm.DeletedAt `json:"deletedAt"`
 	DeletedBy string         `json:"deletedBy"`
 	FirstName string         `json:"firstName"`
