@@ -4,6 +4,8 @@ import (
 	"log"
 
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
+	"github.com/3ackdoor/go-demo-api/src/module/user/repository"
+	"gorm.io/gorm"
 )
 
 type UserService interface {
@@ -16,10 +18,16 @@ type UserService interface {
 }
 
 type UserServiceImpl struct {
+	UserRepository repository.UserRepository
 }
 
-func NewUserService() *UserServiceImpl {
-	return &UserServiceImpl{}
+func NewUserService(db *gorm.DB) *UserServiceImpl {
+
+	repo := repository.NewUserRepository(db)
+
+	return &UserServiceImpl{
+		UserRepository: repo,
+	}
 }
 
 func (u *UserServiceImpl) GetUsers() bool {
@@ -27,6 +35,8 @@ func (u *UserServiceImpl) GetUsers() bool {
 }
 
 func (u *UserServiceImpl) GetAllUsers() bool {
+	users := u.UserRepository.FindAll()
+	log.Printf("users: %v", users)
 	return true
 }
 
