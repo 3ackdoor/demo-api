@@ -42,7 +42,7 @@ func (u *UserController) getUserById(ctx *gin.Context) {
 func (u *UserController) createUser(ctx *gin.Context) {
 	var reqBody dto.UserCreationRequest
 	if err := ctx.Bind(&reqBody); err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
 	r := u.UserService.CreateUser(reqBody)
@@ -52,7 +52,7 @@ func (u *UserController) createUser(ctx *gin.Context) {
 func (u *UserController) updateUserById(ctx *gin.Context) {
 	var reqBody dto.UserUpdationRequest
 	if err := ctx.Bind(&reqBody); err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
 
 	r := u.UserService.UpdateUserById(ctx.Param("id"), reqBody)
