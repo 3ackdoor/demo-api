@@ -63,8 +63,14 @@ func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) dto.UserMo
 func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequest) dto.UserModel {
 	log.Printf("args: %v, %v", id, request)
 	idVal := util.ConvertStringToUint(id)
-	user := converter.ConvertUserUpdationRequestToUserEntity(request)
-	user.ID = idVal
+	// user := converter.ConvertUserUpdationRequestToUserEntity(request)
+
+	user := u.UserRepository.FindById(idVal)
+	if user == nil {
+		log.Panic("user not found")
+	}
+
+	converter.ConvertUserUpdationRequestToUserEntity(request, user)
 	u.UserRepository.Save(user)
 
 	resp := converter.ConvertUserEntityToUserModel(user)

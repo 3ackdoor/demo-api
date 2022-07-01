@@ -14,12 +14,10 @@ func ConvertUserCreationRequestToUserEntity(r dto.UserCreationRequest) *entity.U
 	}
 }
 
-func ConvertUserUpdationRequestToUserEntity(r dto.UserUpdationRequest) *entity.User {
-	return &entity.User{
-		FirstName: r.FirstName,
-		LastName:  r.LastName,
-		Age:       r.Age,
-	}
+func ConvertUserUpdationRequestToUserEntity(r dto.UserUpdationRequest, e *entity.User) {
+	e.FirstName = r.FirstName
+	e.LastName = r.LastName
+	e.Age = r.Age
 }
 
 func ConvertUserEntityToUserModel(user *entity.User) dto.UserModel {

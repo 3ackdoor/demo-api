@@ -13,15 +13,15 @@ type Auditor struct {
 
 func (a *Auditor) BeforeCreate(tx *gorm.DB) (err error) {
 	a.CreatedBy = constant.DefaultAuditorName
-	return nil
+	return
 }
 
 func (a *Auditor) BeforeUpdate(tx *gorm.DB) (err error) {
 	a.UpdatedBy = constant.DefaultAuditorName
-	return nil
+	return
 }
 
 func (a *Auditor) BeforeDelete(tx *gorm.DB) (err error) {
 	a.DeletedBy = constant.DefaultAuditorName
-	return nil
+	return
 }
