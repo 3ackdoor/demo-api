@@ -2,10 +2,10 @@ package service
 
 import (
 	"log"
-	"strconv"
 
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/repository"
+	"github.com/3ackdoor/go-demo-api/src/util"
 	"gorm.io/gorm"
 )
 
@@ -43,15 +43,12 @@ func (u *UserServiceImpl) GetAllUsers() bool {
 
 func (u *UserServiceImpl) GetUserById(id string) bool {
 	log.Printf("args: %v", id)
-	var idVal uint
-	if val, err := strconv.ParseUint(id, 10, 32); err != nil {
-		log.Panic(err)
-	} else {
-		idVal = uint(val)
-	}
 
+	idVal := util.ConvertStringToUint(id)
 	users := u.UserRepository.FindById(uint(idVal))
+
 	log.Printf("users: %v", users)
+
 	return true
 }
 
