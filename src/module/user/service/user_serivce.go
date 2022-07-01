@@ -2,6 +2,7 @@ package service
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/repository"
@@ -11,10 +12,10 @@ import (
 type UserService interface {
 	GetUsers() bool
 	GetAllUsers() bool
-	GetUserById(any) bool
+	GetUserById(string) bool
 	CreateUser(dto.UserCreationRequest) bool
-	UpdateUserById(any, dto.UserUpdationRequest) bool
-	DeleteUserById(any) bool
+	UpdateUserById(string, dto.UserUpdationRequest) bool
+	DeleteUserById(string) bool
 }
 
 type UserServiceImpl struct {
@@ -40,8 +41,17 @@ func (u *UserServiceImpl) GetAllUsers() bool {
 	return true
 }
 
-func (u *UserServiceImpl) GetUserById(id any) bool {
+func (u *UserServiceImpl) GetUserById(id string) bool {
 	log.Printf("args: %v", id)
+	var idVal uint
+	if val, err := strconv.ParseUint(id, 10, 32); err != nil {
+		log.Panic(err)
+	} else {
+		idVal = uint(val)
+	}
+
+	users := u.UserRepository.FindById(uint(idVal))
+	log.Printf("users: %v", users)
 	return true
 }
 
@@ -50,12 +60,12 @@ func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) bool {
 	return true
 }
 
-func (u *UserServiceImpl) UpdateUserById(id any, request dto.UserUpdationRequest) bool {
+func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequest) bool {
 	log.Printf("args: %v, %v", id, request)
 	return true
 }
 
-func (u *UserServiceImpl) DeleteUserById(id any) bool {
+func (u *UserServiceImpl) DeleteUserById(id string) bool {
 	log.Printf("args: %v", id)
 	return true
 }
