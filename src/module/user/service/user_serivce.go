@@ -1,8 +1,6 @@
 package service
 
 import (
-	"log"
-
 	"github.com/3ackdoor/go-demo-api/src/module/user/converter"
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
@@ -56,7 +54,7 @@ func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) dto.UserMo
 	user := converter.ConvertUserCreationRequestToUserEntity(request)
 	u.UserRepository.Save(user)
 
-	resp := converter.ConvertUserEntityToUserModel(user)
+	resp := converter.ConvertUserEntityToUserModel(*user)
 	return resp
 }
 
@@ -64,12 +62,9 @@ func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequ
 	idVal := util.ConvertStringToUint(id)
 
 	user := u.UserRepository.FindById(idVal)
-	if user == nil {
-		log.Panic("user not found")
-	}
 
-	converter.ConvertUserUpdationRequestToUserEntity(request, user)
-	u.UserRepository.Save(user)
+	converter.ConvertUserUpdationRequestToUserEntity(idVal, request, &user)
+	u.UserRepository.Update(&user)
 
 	resp := converter.ConvertUserEntityToUserModel(user)
 	return resp
@@ -82,6 +77,6 @@ func (u *UserServiceImpl) DeleteUserById(id string) dto.UserModel {
 	user.ID = idVal
 	u.UserRepository.Delete(user)
 
-	resp := converter.ConvertUserEntityToUserModel(user)
+	resp := converter.ConvertUserEntityToUserModel(*user)
 	return resp
 }

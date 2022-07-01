@@ -18,11 +18,12 @@ const (
 	password = "P@ssw0rd"
 	dbname   = "golang-demo-api"
 	schema   = "public"
+	timezone = "UTC"
 )
 
 func main() {
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable search_path=%s", host, port, user, password, dbname, schema)
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable search_path=%s TimeZone=%s", host, port, user, password, dbname, schema, timezone)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{QueryFields: true, PrepareStmt: true, Logger: logger.Default.LogMode(logger.Info)})
 	if err != nil {

@@ -15,13 +15,14 @@ func ConvertUserCreationRequestToUserEntity(r userDto.UserCreationRequest) *enti
 	}
 }
 
-func ConvertUserUpdationRequestToUserEntity(r userDto.UserUpdationRequest, e *entity.User) {
+func ConvertUserUpdationRequestToUserEntity(id uint, r userDto.UserUpdationRequest, e *entity.User) {
+	e.ID = id
 	e.FirstName = r.FirstName
 	e.LastName = r.LastName
 	e.Age = r.Age
 }
 
-func ConvertUserEntityToUserModel(user *entity.User) userDto.UserModel {
+func ConvertUserEntityToUserModel(user entity.User) userDto.UserModel {
 	return userDto.UserModel{
 		BaseResponse: dto.BaseResponse{
 			ID:        user.ID,
@@ -40,11 +41,11 @@ func ConvertUserEntityToUserModel(user *entity.User) userDto.UserModel {
 	}
 }
 
-func ConvertUserEntitiesToUserModels(users *[]entity.User) []userDto.UserModel {
+func ConvertUserEntitiesToUserModels(users []entity.User) []userDto.UserModel {
 	var userModels []userDto.UserModel
 
-	for _, user := range *users {
-		userModel := ConvertUserEntityToUserModel(&user)
+	for _, user := range users {
+		userModel := ConvertUserEntityToUserModel(user)
 		userModels = append(userModels, userModel)
 	}
 

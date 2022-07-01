@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"strconv"
+	"time"
 )
 
 func ConvertStringToUint(s string) uint {
@@ -29,6 +30,20 @@ func NewNullString(s *string) sql.NullString {
 
 	return sql.NullString{
 		String: *s,
+		Valid:  true,
+	}
+}
+
+
+func NewNullTime(s *time.Time) sql.NullTime {
+	if s == nil {
+		return sql.NullTime{
+			Valid: false,
+		}
+	}
+
+	return sql.NullTime{
+		Time: *s,
 		Valid:  true,
 	}
 }
