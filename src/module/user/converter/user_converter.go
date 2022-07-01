@@ -24,6 +24,13 @@ func ConvertUserUpdationRequestToUserEntity(r dto.UserUpdationRequest) *entity.U
 
 func ConvertUserEntityToUserModel(user *entity.User) dto.UserModel {
 	return dto.UserModel{
+		ID:        user.ID,
+		CreatedAt: user.CreatedAt,
+		CreatedBy: user.CreatedBy,
+		UpdatedAt: user.UpdatedAt,
+		UpdatedBy: user.UpdatedBy,
+		DeletedAt: user.DeletedAt,
+		DeletedBy: user.DeletedBy,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Age:       user.Age,
