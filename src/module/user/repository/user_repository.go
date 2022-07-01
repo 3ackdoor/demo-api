@@ -8,8 +8,8 @@ import (
 type UserRepository interface {
 	FindAll() *[]entity.User
 	FindById(id uint) *entity.User
-	Save(user *entity.User) *entity.User
-	Delete(user *entity.User) *entity.User
+	Save(user *entity.User) **entity.User 
+	Delete(user *entity.User) **entity.User
 }
 type UserRepositoryImpl struct {
 	*gorm.DB
@@ -35,14 +35,12 @@ func (u *UserRepositoryImpl) FindById(id uint) *entity.User {
 	return &user
 }
 
-func (u *UserRepositoryImpl) Save(user *entity.User) *entity.User {
+func (u *UserRepositoryImpl) Save(user *entity.User) **entity.User {
 	u.Statement.Save(&user)
-
-	return user
+	return &user
 }
 
-func (u *UserRepositoryImpl) Delete(user *entity.User) *entity.User {
+func (u *UserRepositoryImpl) Delete(user *entity.User) **entity.User {
 	u.Statement.Delete(&user)
-
-	return user
+	return &user
 }

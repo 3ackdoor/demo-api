@@ -3,12 +3,10 @@ package entity
 import (
 	"github.com/3ackdoor/go-demo-api/src/entity"
 	"github.com/3ackdoor/go-demo-api/src/type/null"
-	"gorm.io/gorm"
 )
 
 type User struct {
-	gorm.Model
-	entity.Auditor
+	entity.BaseModel
 
 	FirstName string `gorm:"not null"`
 	LastName  string `gorm:"not null"`

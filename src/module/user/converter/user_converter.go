@@ -1,11 +1,12 @@
 package converter
 
 import (
-	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
+	"github.com/3ackdoor/go-demo-api/src/dto"
+	userDto "github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 )
 
-func ConvertUserCreationRequestToUserEntity(r dto.UserCreationRequest) *entity.User {
+func ConvertUserCreationRequestToUserEntity(r userDto.UserCreationRequest) *entity.User {
 	return &entity.User{
 		FirstName: r.FirstName,
 		LastName:  r.LastName,
@@ -14,21 +15,24 @@ func ConvertUserCreationRequestToUserEntity(r dto.UserCreationRequest) *entity.U
 	}
 }
 
-func ConvertUserUpdationRequestToUserEntity(r dto.UserUpdationRequest, e *entity.User) {
+func ConvertUserUpdationRequestToUserEntity(r userDto.UserUpdationRequest, e *entity.User) {
 	e.FirstName = r.FirstName
 	e.LastName = r.LastName
 	e.Age = r.Age
 }
 
-func ConvertUserEntityToUserModel(user *entity.User) dto.UserModel {
-	return dto.UserModel{
-		ID:        user.ID,
-		CreatedAt: user.CreatedAt,
-		CreatedBy: user.CreatedBy,
-		UpdatedAt: user.UpdatedAt,
-		UpdatedBy: user.UpdatedBy,
-		DeletedAt: user.DeletedAt,
-		DeletedBy: user.DeletedBy,
+func ConvertUserEntityToUserModel(user *entity.User) userDto.UserModel {
+	return userDto.UserModel{
+		BaseResponse: dto.BaseResponse{
+			ID:        user.ID,
+			CreatedBy: user.CreatedBy,
+			UpdatedBy: user.UpdatedBy,
+			DeletedBy: user.DeletedBy,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+			DeletedAt: user.DeletedAt,
+		},
+
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Age:       user.Age,
@@ -36,8 +40,8 @@ func ConvertUserEntityToUserModel(user *entity.User) dto.UserModel {
 	}
 }
 
-func ConvertUserEntitiesToUserModels(users *[]entity.User) []dto.UserModel {
-	var userModels []dto.UserModel
+func ConvertUserEntitiesToUserModels(users *[]entity.User) []userDto.UserModel {
+	var userModels []userDto.UserModel
 
 	for _, user := range *users {
 		userModel := ConvertUserEntityToUserModel(&user)
