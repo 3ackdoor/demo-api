@@ -10,9 +10,9 @@ type User struct {
 	gorm.Model
 	entity.Auditor
 
-	FirstName string
-	LastName string
-	Age int
-	Hobby null.String
+	FirstName string `gorm:"not null"`
+	LastName string `gorm:"not null"`
+	Age int `gorm:"not null"`
+	Hobby null.String 
 
 }
