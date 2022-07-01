@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/3ackdoor/go-demo-api/src/module/user/converter"
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
+	"github.com/3ackdoor/go-demo-api/src/module/user/mapper"
 	"github.com/3ackdoor/go-demo-api/src/module/user/repository"
 	"github.com/3ackdoor/go-demo-api/src/util"
 	"gorm.io/gorm"
@@ -38,7 +38,7 @@ func (u *UserServiceImpl) GetUsers() bool {
 func (u *UserServiceImpl) GetAllUsers() []dto.UserModel {
 	users := u.UserRepository.FindAll()
 
-	resp := converter.ConvertUserEntitiesToUserModels(users)
+	resp := mapper.MapUserEntitiesToUserModels(users)
 	return resp
 }
 
@@ -46,15 +46,15 @@ func (u *UserServiceImpl) GetUserById(id string) dto.UserModel {
 	idVal := util.ConvertStringToUint(id)
 	user := u.UserRepository.FindById(uint(idVal))
 
-	resp := converter.ConvertUserEntityToUserModel(user)
+	resp := mapper.MapUserEntityToUserModel(user)
 	return resp
 }
 
 func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) dto.UserModel {
-	user := converter.ConvertUserCreationRequestToUserEntity(request)
+	user := mapper.MapUserCreationRequestToUserEntity(request)
 	u.UserRepository.Save(user)
 
-	resp := converter.ConvertUserEntityToUserModel(*user)
+	resp := mapper.MapUserEntityToUserModel(*user)
 	return resp
 }
 
@@ -63,10 +63,10 @@ func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequ
 
 	user := u.UserRepository.FindById(idVal)
 
-	converter.ConvertUserUpdationRequestToUserEntity(idVal, request, &user)
+	mapper.MapUserUpdationRequestToUserEntity(idVal, request, &user)
 	u.UserRepository.Update(&user)
 
-	resp := converter.ConvertUserEntityToUserModel(user)
+	resp := mapper.MapUserEntityToUserModel(user)
 	return resp
 }
 
@@ -77,6 +77,6 @@ func (u *UserServiceImpl) DeleteUserById(id string) dto.UserModel {
 	user.ID = idVal
 	u.UserRepository.Delete(user)
 
-	resp := converter.ConvertUserEntityToUserModel(*user)
+	resp := mapper.MapUserEntityToUserModel(*user)
 	return resp
 }

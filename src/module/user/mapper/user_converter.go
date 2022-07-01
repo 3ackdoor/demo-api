@@ -1,4 +1,4 @@
-package converter
+package mapper
 
 import (
 	"github.com/3ackdoor/go-demo-api/src/dto"
@@ -6,7 +6,7 @@ import (
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 )
 
-func ConvertUserCreationRequestToUserEntity(r userDto.UserCreationRequest) *entity.User {
+func MapUserCreationRequestToUserEntity(r userDto.UserCreationRequest) *entity.User {
 	return &entity.User{
 		FirstName: r.FirstName,
 		LastName:  r.LastName,
@@ -15,14 +15,14 @@ func ConvertUserCreationRequestToUserEntity(r userDto.UserCreationRequest) *enti
 	}
 }
 
-func ConvertUserUpdationRequestToUserEntity(id uint, r userDto.UserUpdationRequest, e *entity.User) {
+func MapUserUpdationRequestToUserEntity(id uint, r userDto.UserUpdationRequest, e *entity.User) {
 	e.ID = id
 	e.FirstName = r.FirstName
 	e.LastName = r.LastName
 	e.Age = r.Age
 }
 
-func ConvertUserEntityToUserModel(user entity.User) userDto.UserModel {
+func MapUserEntityToUserModel(user entity.User) userDto.UserModel {
 	return userDto.UserModel{
 		BaseResponse: dto.BaseResponse{
 			ID:        user.ID,
@@ -41,11 +41,11 @@ func ConvertUserEntityToUserModel(user entity.User) userDto.UserModel {
 	}
 }
 
-func ConvertUserEntitiesToUserModels(users []entity.User) []userDto.UserModel {
+func MapUserEntitiesToUserModels(users []entity.User) []userDto.UserModel {
 	var userModels []userDto.UserModel
 
 	for _, user := range users {
-		userModel := ConvertUserEntityToUserModel(user)
+		userModel := MapUserEntityToUserModel(user)
 		userModels = append(userModels, userModel)
 	}
 
