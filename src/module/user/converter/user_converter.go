@@ -5,19 +5,39 @@ import (
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 )
 
-func ConvertUserCreationToUserEntity(u dto.UserCreationRequest) *entity.User {
+func ConvertUserCreationRequestToUserEntity(r dto.UserCreationRequest) *entity.User {
 	return &entity.User{
-		FirstName: u.FirstName,
-		LastName:  u.LastName,
-		Age:       u.Age,
-		Hobby:     u.Hobby,
+		FirstName: r.FirstName,
+		LastName:  r.LastName,
+		Age:       r.Age,
+		Hobby:     r.Hobby,
 	}
 }
 
-func ConvertUserUpdationRequestToUserEntity(u dto.UserUpdationRequest) *entity.User {
+func ConvertUserUpdationRequestToUserEntity(r dto.UserUpdationRequest) *entity.User {
 	return &entity.User{
-		FirstName: u.FirstName,
-		LastName:  u.LastName,
-		Age:       u.Age,
+		FirstName: r.FirstName,
+		LastName:  r.LastName,
+		Age:       r.Age,
 	}
+}
+
+func ConvertUserEntityToUserModel(user *entity.User) dto.UserModel {
+	return dto.UserModel{
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Age:       user.Age,
+		Hobby:     user.Hobby,
+	}
+}
+
+func ConvertUserEntitiesToUserModels(users *[]entity.User) []dto.UserModel {
+	var userModels []dto.UserModel
+
+	for _, user := range *users {
+		userModel := ConvertUserEntityToUserModel(&user)
+		userModels = append(userModels, userModel)
+	}
+
+	return userModels
 }

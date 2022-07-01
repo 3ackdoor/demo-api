@@ -3,6 +3,7 @@ package service
 import (
 	"log"
 
+	"github.com/3ackdoor/go-demo-api/src/module/user/converter"
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/repository"
 	"github.com/3ackdoor/go-demo-api/src/util"
@@ -11,10 +12,10 @@ import (
 
 type UserService interface {
 	GetUsers() bool
-	GetAllUsers() bool
-	GetUserById(string) bool
-	CreateUser(dto.UserCreationRequest) bool
-	UpdateUserById(string, dto.UserUpdationRequest) bool
+	GetAllUsers() []dto.UserModel
+	GetUserById(string) dto.UserModel
+	CreateUser(dto.UserCreationRequest) dto.UserModel
+	UpdateUserById(string, dto.UserUpdationRequest) dto.UserModel
 	DeleteUserById(string) bool
 }
 
@@ -35,31 +36,38 @@ func (u *UserServiceImpl) GetUsers() bool {
 	return true
 }
 
-func (u *UserServiceImpl) GetAllUsers() bool {
+func (u *UserServiceImpl) GetAllUsers() []dto.UserModel {
 	users := u.UserRepository.FindAll()
-	log.Printf("users: %v", users)
-	return true
+
+	resp := converter.ConvertUserEntitiesToUserModels(users)
+	return resp
 }
 
-func (u *UserServiceImpl) GetUserById(id string) bool {
-	log.Printf("args: %v", id)
-
+func (u *UserServiceImpl) GetUserById(id string) dto.UserModel {
 	idVal := util.ConvertStringToUint(id)
-	users := u.UserRepository.FindById(uint(idVal))
+	user := u.UserRepository.FindById(uint(idVal))
 
-	log.Printf("users: %v", users)
-
-	return true
+	resp := converter.ConvertUserEntityToUserModel(user)
+	return resp
 }
 
-func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) bool {
-	log.Printf("args: %v", request)
-	return true
+func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) dto.UserModel {
+	user := converter.ConvertUserCreationRequestToUserEntity(request)
+	u.UserRepository.Save(user)
+
+	resp := converter.ConvertUserEntityToUserModel(user)
+	return resp
 }
 
-func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequest) bool {
+func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequest) dto.UserModel {
 	log.Printf("args: %v, %v", id, request)
-	return true
+	idVal := util.ConvertStringToUint(id)
+	user := converter.ConvertUserUpdationRequestToUserEntity(request)
+	user.ID = idVal
+	u.UserRepository.Save(user)
+
+	resp := converter.ConvertUserEntityToUserModel(user)
+	return resp
 }
 
 func (u *UserServiceImpl) DeleteUserById(id string) bool {
