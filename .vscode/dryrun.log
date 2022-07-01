@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/3ackdoor/Desktop/Code/practice/go/advance-mode/demo-api'
+printf "%s\n" "Useful targets:"
+grep -E '^[a-zA-Z0-9_-]+:.*?## .*$'  Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  make %-15s\033[0m %s\n", $1, $2}'
+make: Leaving directory `/Users/3ackdoor/Desktop/Code/practice/go/advance-mode/demo-api'
+ 
