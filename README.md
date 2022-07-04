@@ -1,6 +1,6 @@
 # Example Go Project
 
-This project is an example for learning Golang design pattern and structuring folder by using OOP knowlegde under the hood
+This project is an example for learning Golang design pattern and structuring folder by using OOP knowledge under the hood
 
 ## Quick Start
 just type this command in CLI: `make run`
