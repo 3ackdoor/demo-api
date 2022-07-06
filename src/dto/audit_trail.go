@@ -2,8 +2,7 @@ package dto
 
 import "github.com/3ackdoor/go-demo-api/src/type/null"
 
-type BaseResponse struct {
-	ID        uint        `json:"id"`
+type AuditTrail struct {
 	CreatedAt null.Time   `json:"createdAt"`
 	CreatedBy null.String `json:"createdBy"`
 	UpdatedAt null.Time   `json:"updatedAt"`

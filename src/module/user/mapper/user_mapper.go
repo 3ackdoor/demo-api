@@ -24,8 +24,7 @@ func MapUserUpdationRequestToUserEntity(id uint, r userDto.UserUpdationRequest, 
 
 func MapUserEntityToUserModel(user entity.User) userDto.UserModel {
 	return userDto.UserModel{
-		BaseResponse: dto.BaseResponse{
-			ID:        user.ID,
+		AuditTrail: dto.AuditTrail{
 			CreatedBy: user.CreatedBy,
 			UpdatedBy: user.UpdatedBy,
 			DeletedBy: user.DeletedBy,
@@ -34,6 +33,7 @@ func MapUserEntityToUserModel(user entity.User) userDto.UserModel {
 			DeletedAt: user.DeletedAt,
 		},
 
+		ID:        user.ID,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
 		Age:       user.Age,

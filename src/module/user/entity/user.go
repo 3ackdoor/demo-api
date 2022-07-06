@@ -6,8 +6,8 @@ import (
 )
 
 type User struct {
-	entity.BaseModel
-
+	entity.AuditTrail
+	ID        uint   `gorm:"primarykey"`
 	FirstName string `gorm:"not null"`
 	LastName  string `gorm:"not null"`
 	Age       int    `gorm:"not null"`

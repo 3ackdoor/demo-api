@@ -6,7 +6,8 @@ import (
 )
 
 type UserModel struct {
-	dto.BaseResponse
+	dto.AuditTrail
+	ID        uint        `json:"id"`
 	FirstName string      `json:"firstName"`
 	LastName  string      `json:"lastName"`
 	Age       int         `json:"age"`

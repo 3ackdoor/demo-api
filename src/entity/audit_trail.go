@@ -9,8 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type BaseModel struct {
-	ID        uint        `gorm:"primarykey"`
+type AuditTrail struct {
 	CreatedAt null.Time   `gorm:"type:timestamp"`
 	UpdatedAt null.Time   `gorm:"type:timestamp"`
 	DeletedAt null.Time   `gorm:"type:timestamp"`
@@ -19,7 +18,7 @@ type BaseModel struct {
 	DeletedBy null.String `gorm:"<-:update"`
 }
 
-func (a *BaseModel) BeforeSave(tx *gorm.DB) (err error) {
+func (a *AuditTrail) BeforeSave(tx *gorm.DB) (err error) {
 	name := constant.DefaultAuditorName
 	now := time.Now().UTC()
 	a.CreatedAt = null.Time{NullTime: util.NewNullTime(&now)}
@@ -29,7 +28,7 @@ func (a *BaseModel) BeforeSave(tx *gorm.DB) (err error) {
 	return
 }
 
-func (a *BaseModel) BeforeUpdate(tx *gorm.DB) (err error) {
+func (a *AuditTrail) BeforeUpdate(tx *gorm.DB) (err error) {
 	name := constant.DefaultAuditorName
 	now := time.Now().UTC()
 	a.UpdatedAt = null.Time{NullTime: util.NewNullTime(&now)}
@@ -37,7 +36,7 @@ func (a *BaseModel) BeforeUpdate(tx *gorm.DB) (err error) {
 	return
 }
 
-func (a *BaseModel) BeforeDelete(tx *gorm.DB) (err error) {
+func (a *AuditTrail) BeforeDelete(tx *gorm.DB) (err error) {
 	name := constant.DefaultAuditorName
 	now := time.Now().UTC()
 	a.DeletedAt = null.Time{NullTime: util.NewNullTime(&now)}

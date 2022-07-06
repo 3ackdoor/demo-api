@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/3ackdoor/go-demo-api/src/config"
+	"github.com/3ackdoor/go-demo-api/src/middleware"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -31,7 +32,11 @@ func main() {
 	}
 
 	app := gin.New()
-	app.Use(gin.Logger(), gin.Recovery())
+
+	app.Use(gin.Logger())
+	app.Use(gin.CustomRecovery(middleware.CustomRecoveryFunc()))
+
+	// app.Use(gin.Logger(), gin.Recovery())
 
 	r := config.NewRoutes(app, db)
 	r.Run()
