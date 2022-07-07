@@ -1,11 +1,11 @@
 package dto
 
 type ValidationError struct {
-	Key string
-	Value any
-	Description error
+	Key         string `json:"key"`
+	Value       any    `json:"value"`
+	Description string `json:"description"`
 }
 
 type ExternalServiceError struct {
-	Description error
+	Description string `json:"description"`
 }
