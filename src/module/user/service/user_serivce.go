@@ -1,8 +1,7 @@
 package service
 
 import (
-	"log"
-
+	"github.com/3ackdoor/go-demo-api/src/exception"
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 	"github.com/3ackdoor/go-demo-api/src/module/user/mapper"
@@ -40,7 +39,8 @@ func (u *UserServiceImpl) GetUsers() bool {
 func (u *UserServiceImpl) GetAllUsers() []dto.UserModel {
 	users := u.UserRepository.FindAll()
 
-	log.Panic("v ...any")
+	err := exception.ValidationException{Description: "rise validation error"}
+	panic(err.BuildMessage())
 
 	resp := mapper.MapUserEntitiesToUserModels(users)
 	return resp

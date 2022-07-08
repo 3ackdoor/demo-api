@@ -2,41 +2,33 @@ package middleware
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/3ackdoor/go-demo-api/src/dto"
+	"github.com/3ackdoor/go-demo-api/src/exception"
 	"github.com/gin-gonic/gin"
 )
 
 func CustomRecoveryFunc() gin.RecoveryFunc {
-	return func(c *gin.Context, err any) {
-		log.Printf("err: %v", err)
+	return func(c *gin.Context, errMsg any) {
+		log.Printf("err: %v", errMsg)
 		log.Printf("custom recovery func")
 
-		tValidationError := &dto.ValidationError{
-			Key: "kkkkkkkkkkkkkkkkkkkkk",
-			Value: "vvvvvvvvvvvvvvvvv",
-			Description: "dddddddddddddddddddd",
-		}
-		v, err := json.Marshal(tValidationError)
-		if err != nil {
-			log.Panic(err)
+		errVal, ok := errMsg.(string)
+		if !ok {
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
 		}
 
-		log.Printf("value: %v", string(v))
-
-		var data dto.ValidationError
-		log.Printf("init: %v", data)
-		_ = json.Unmarshal(v, &data);
-
-		log.Printf("new value: %v", data)
-
-		if err, ok := err.(string); ok {
-			c.String(http.StatusInternalServerError, fmt.Sprintf("error: %s", err))
+		var validationException exception.ValidationException
+		if err := json.Unmarshal([]byte(errVal), &validationException); err == nil && validationException.Code == exception.ValidationExceptionName {
+			log.Printf("validationException: %v", validationException)
 		}
-		c.AbortWithStatus(http.StatusInternalServerError)
+
+		var externalServiceException exception.ExternalServiceException
+		if err := json.Unmarshal([]byte(errVal), &externalServiceException); err == nil && externalServiceException.Code == exception.ExternalServiceExceptionName {
+			log.Printf("externalServiceException: %v", externalServiceException)
+		}
 
 	}
 }
