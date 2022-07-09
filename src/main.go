@@ -32,11 +32,7 @@ func main() {
 	}
 
 	app := gin.New()
-
-	app.Use(gin.Logger())
-	app.Use(gin.CustomRecovery(middleware.CustomRecoveryFunc()))
-
-	// app.Use(gin.Logger(), gin.Recovery())
+	app.Use(gin.Logger(), gin.CustomRecovery(middleware.GlobalErrorHandler()))
 
 	r := config.NewRoutes(app, db)
 	r.Run()

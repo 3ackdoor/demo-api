@@ -38,9 +38,7 @@ func (u *UserServiceImpl) GetUsers() bool {
 
 func (u *UserServiceImpl) GetAllUsers() []dto.UserModel {
 	users := u.UserRepository.FindAll()
-
-	err := exception.ValidationException{Description: "rise validation error"}
-	panic(err.BuildMessage())
+	panic(exception.NewInternalServiceException("rise error"))
 
 	resp := mapper.MapUserEntitiesToUserModels(users)
 	return resp
