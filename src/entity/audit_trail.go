@@ -10,12 +10,12 @@ import (
 )
 
 type AuditTrail struct {
-	CreatedAt null.Time   `gorm:"type:timestamp"`
-	UpdatedAt null.Time   `gorm:"type:timestamp"`
-	DeletedAt null.Time   `gorm:"type:timestamp"`
-	CreatedBy null.String `gorm:"<-:create"`
-	UpdatedBy null.String `gorm:"<-"`
-	DeletedBy null.String `gorm:"<-:update"`
+	CreatedAt null.Time      `gorm:"type:timestamp"`
+	UpdatedAt null.Time      `gorm:"type:timestamp"`
+	DeletedAt gorm.DeletedAt `gorm:"type:timestamp"`
+	CreatedBy null.String    `gorm:"<-:create"`
+	UpdatedBy null.String    `gorm:"<-"`
+	DeletedBy null.String    `gorm:"<-:update"`
 }
 
 func (a *AuditTrail) BeforeSave(tx *gorm.DB) (err error) {
@@ -38,8 +38,6 @@ func (a *AuditTrail) BeforeUpdate(tx *gorm.DB) (err error) {
 
 func (a *AuditTrail) BeforeDelete(tx *gorm.DB) (err error) {
 	name := constant.DefaultAuditorName
-	now := time.Now().UTC()
-	a.DeletedAt = null.Time{NullTime: util.NewNullTime(&now)}
 	a.DeletedBy = null.String{NullString: util.NewNullString(&name)}
 	return
 }
