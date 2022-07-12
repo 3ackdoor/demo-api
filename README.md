@@ -12,5 +12,5 @@ just type this command in CLI: `make run`
   - [returning data from modified rows](https://gorm.io/docs/update.html#Returning-Data-From-Modified-Rows)
   - use `Middleware` to map the errors, extract JWT and so on...
   - implement `RequestContext`
-  - handle errors
+  - <s>handle errors<s>
   - ...
