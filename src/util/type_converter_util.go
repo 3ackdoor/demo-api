@@ -2,7 +2,6 @@ package util
 
 import (
 	"database/sql"
-	"log"
 	"strconv"
 	"time"
 )
@@ -10,7 +9,7 @@ import (
 func ConvertStringToUint(s string) uint {
 	var i uint
 	if val, err := strconv.ParseUint(s, 10, 32); err != nil {
-		log.Panic(err)
+		panic(err)
 	} else {
 		i = uint(val)
 	}

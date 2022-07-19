@@ -79,6 +79,7 @@ func run(r config.Route) *http.Server {
 
 	fmt.Println()
 	log.Printf("Listening and serving HTTP on :%s\n", port)
+
 	return srv
 }
 

@@ -27,29 +27,40 @@ func ResponseWriterHandler() gin.HandlerFunc {
 		c.Next()
 
 		/* After Request */
-		_, exists := c.Get("recovered")
-		log.Printf("recovered: %v ", exists)
-		if !exists && strings.Contains(w.Header().Get("Content-Type"), gin.MIMEJSON) {
-			data := w.Body.Bytes()
-			w.Body.Reset()
-
-			resp := NewJsonResponse(data)
-			body, err := json.Marshal(resp)
+		_, isRecovered := c.Get(recovered)
+		if !isRecovered && strings.Contains(w.Header().Get("Content-Type"), gin.MIMEJSON) {
+			err := responseSuccess(w)
 			if err != nil {
-				log.Printf("Something went wrong while encoding JSON: %v", err)
 				return
 			}
-
-			w.Body.Write(body)
 		} else {
-			body := w.Body.Bytes()
-			w.Body.Reset()
-
-			w.Body.Write(body)
+			responseError(w)
 		}
 
 		w.Flush()
 	}
+}
+
+func responseSuccess(w *responseWriter) error {
+	data := w.Body.Bytes()
+	w.Body.Reset()
+
+	resp := NewJsonResponse(data)
+	body, err := json.Marshal(resp)
+	if err != nil {
+		log.Printf("Something went wrong while encoding JSON: %v", err)
+		return err
+	}
+
+	w.Body.Write(body)
+	return nil
+}
+
+func responseError(w *responseWriter) {
+	body := w.Body.Bytes()
+	w.Body.Reset()
+
+	w.Body.Write(body)
 }
 
 type jsonResponse struct {

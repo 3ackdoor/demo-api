@@ -7,10 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	recovered string = "recovered"
+)
+
 func RecoveryWriterHandler() gin.RecoveryFunc {
 	return func(c *gin.Context, err any) {
 		MapErrorResponse(err, c)
-		c.Set("recovered", true)
+		c.Set(recovered, true)
 	}
 }
 

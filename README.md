@@ -15,8 +15,10 @@ just type this command in CLI: `make run`
   - <s>handle errors by both gin and internal system convention</s>
   - [returning data from modified rows](https://gorm.io/docs/update.html#Returning-Data-From-Modified-Rows)
   - custom model binding and validation [(*must bind* case)](https://chenyitian.gitbooks.io/gin-web-framework/content/docs/17.html)
+  - custom validation
+  - add example code for data validation
   - log request body
-  - logging to Sentry (Optional)
+  - logging to Sentry (optional)
   - auth middleware
   - implement `RequestContext`
   - request timeout middleware
