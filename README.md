@@ -23,4 +23,5 @@ just type this command in CLI: `make run`
   - implement `RequestContext`
   - request timeout middleware
   - auto route mapping *(SUPER HARD)
+  - refactor response util (use polymorphism)
   - ...
