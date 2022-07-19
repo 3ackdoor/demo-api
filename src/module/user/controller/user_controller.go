@@ -28,12 +28,12 @@ func NewUserController(rg *gin.RouterGroup, us service.UserService) {
 }
 
 func (u *UserController) getAllUsers(c *gin.Context) {
+	response.Success(c, u.UserService.GetAllUsers())
 	// r := u.UserService.GetAllUsers()
-	c.AbortWithStatusJSON(404, gin.H{
-		"error": "404",
-	})
+	// c.AbortWithStatusJSON(404, gin.H{
+	// 	"error": "404",
+	// })
 	// c.AbortWithError(http.StatusBadRequest, errors.New("AbortWithError"))
-		return
 	// util.ResponseSuccess(c, r)
 }
 
