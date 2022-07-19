@@ -53,8 +53,12 @@ func main() {
 	)
 
 	r := config.NewRoutes(app, db)
-	// r.Run()
+	srv := run(r)
+	gracefulShutdown(srv)
 
+}
+
+func run(r config.Route) *http.Server {
 	var port string
 	if p := os.Getenv("port"); p != "" {
 		port = p
@@ -75,11 +79,22 @@ func main() {
 
 	fmt.Println()
 	log.Printf("Listening and serving HTTP on :%s\n", port)
+	return srv
+}
 
-	// ref: https://github.com/hlandau/service/issues/10 and https://github.com/golang/go/issues/9463
+// ref: https://github.com/hlandau/service/issues/10 and https://github.com/golang/go/issues/9463
+func gracefulShutdown(srv *http.Server) {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
+
+	killSignal := <-quit
+	switch killSignal {
+	case syscall.SIGINT:
+		log.Print("Got SIGINT...")
+	case syscall.SIGTERM:
+		log.Print("Got SIGTERM...")
+	}
+
 	log.Println("Server is shutting down...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -88,5 +103,4 @@ func main() {
 		log.Fatal("Server Shutdown:", err)
 	}
 	log.Println("Server gracefully stopped")
-
 }
