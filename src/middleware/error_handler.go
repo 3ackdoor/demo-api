@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GlobalErrorHandler() gin.RecoveryFunc {
+func ErrorHandler() gin.RecoveryFunc {
 	return func(c *gin.Context, err any) {
 		MapErrorResponse(err, c)
 	}

@@ -8,15 +8,15 @@ import (
 )
 
 type Route struct {
-	router *gin.Engine
+	Router *gin.Engine
 }
 
 func NewRoutes(app *gin.Engine, db *gorm.DB) Route {
 	r := Route{
-		router: app,
+		Router: app,
 	}
 
-	v1 := r.router.Group("/v1")
+	v1 := r.Router.Group("/v1")
 
 	controller.NewUserController(v1, service.NewUserService(db))
 
@@ -24,5 +24,5 @@ func NewRoutes(app *gin.Engine, db *gorm.DB) Route {
 }
 
 func (r Route) Run(addr ...string) error {
-	return r.router.Run()
+	return r.Router.Run()
 }

@@ -2,8 +2,8 @@ package repository
 
 import (
 	"errors"
-	"log"
 
+	"github.com/3ackdoor/go-demo-api/src/exception"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 	"gorm.io/gorm"
 )
@@ -35,7 +35,7 @@ func (u *UserRepositoryImpl) FindById(id uint) entity.User {
 	var user entity.User
 	res := u.First(&user, "id = ?", id)
 	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
-		log.Panic(gorm.ErrRecordNotFound)
+		panic(exception.NewValidationException(gorm.ErrRecordNotFound.Error()))
 	}
 
 	return user

@@ -1,8 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/3ackdoor/go-demo-api/src/config"
 	"github.com/3ackdoor/go-demo-api/src/middleware"
@@ -36,17 +42,51 @@ func main() {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{QueryFields: true, PrepareStmt: true, Logger: logger.Default.LogMode(logger.Info)})
 	if err != nil {
-		log.Panic(err)
+		log.Fatal("error occurred when trying to connect to database:", err)
 	}
 
 	app := gin.New()
 	app.Use(
 		gin.Logger(),
-		middleware.LogHandler(),
-		gin.CustomRecovery(middleware.GlobalErrorHandler()),
+		middleware.ResponseHandler(),
+		gin.CustomRecovery(middleware.ErrorHandler()),
 	)
 
 	r := config.NewRoutes(app, db)
-	r.Run()
+	// r.Run()
+
+	var port string
+	if p := os.Getenv("port"); p != "" {
+		port = p
+	} else {
+		port = "8080" // default port
+	}
+
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%s", port),
+		Handler: r.Router,
+	}
+
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("listen: %s\n", err)
+		}
+	}()
+
+	fmt.Println()
+	log.Printf("Listening and serving HTTP on :%s\n", port)
+
+	// ref: https://github.com/hlandau/service/issues/10 and https://github.com/golang/go/issues/9463
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Println("Server is shutting down...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal("Server Shutdown:", err)
+	}
+	log.Println("Server gracefully stopped")
 
 }

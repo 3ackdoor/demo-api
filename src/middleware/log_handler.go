@@ -26,13 +26,12 @@ func (r responseBodyWriter) Write(b []byte) (int, error) {
 // 	return r.ResponseWriter.WriteString(s)
 // }
 
-
 func LogHandler() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-		w := &responseBodyWriter{body: &bytes.Buffer{}, ResponseWriter: ctx.Writer}
-		ctx.Writer = w
-		ctx.Next()
-		log.Println("Response body: " + w.body.String())
+	return func(c *gin.Context) {
+		w := &responseBodyWriter{body: &bytes.Buffer{}, ResponseWriter: c.Writer}
+		c.Writer = w
+		c.Next()
+		log.Printf("Response body: %v \n", w.body.String())
 
 		w.body.Reset()
 	}

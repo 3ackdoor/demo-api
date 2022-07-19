@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"log"
-
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/service"
 	"github.com/3ackdoor/go-demo-api/src/util"
@@ -29,37 +27,37 @@ func NewUserController(rg *gin.RouterGroup, us service.UserService) {
 	}
 }
 
-func (u *UserController) getAllUsers(ctx *gin.Context) {
+func (u *UserController) getAllUsers(c *gin.Context) {
 	r := u.UserService.GetAllUsers()
-	util.ResponseSuccess(ctx, r)
+	util.ResponseSuccess(c, r)
 }
 
-func (u *UserController) getUserById(ctx *gin.Context) {
-	r := u.UserService.GetUserById(ctx.Param("id"))
-	util.ResponseSuccess(ctx, r)
+func (u *UserController) getUserById(c *gin.Context) {
+	r := u.UserService.GetUserById(c.Param("id"))
+	util.ResponseSuccess(c, r)
 }
 
-func (u *UserController) createUser(ctx *gin.Context) {
+func (u *UserController) createUser(c *gin.Context) {
 	var reqBody dto.UserCreationRequest
-	if err := ctx.Bind(&reqBody); err != nil {
-		log.Panic(err)
+	if err := c.BindJSON(&reqBody); err != nil {
+		panic(err)
 	}
 
 	r := u.UserService.CreateUser(reqBody)
-	util.ResponseSuccess(ctx, r)
+	util.ResponseSuccess(c, r)
 }
 
-func (u *UserController) updateUserById(ctx *gin.Context) {
+func (u *UserController) updateUserById(c *gin.Context) {
 	var reqBody dto.UserUpdationRequest
-	if err := ctx.Bind(&reqBody); err != nil {
-		log.Panic(err)
+	if err := c.BindJSON(&reqBody); err != nil {
+		panic(err)
 	}
 
-	r := u.UserService.UpdateUserById(ctx.Param("id"), reqBody)
-	util.ResponseSuccess(ctx, r)
+	r := u.UserService.UpdateUserById(c.Param("id"), reqBody)
+	util.ResponseSuccess(c, r)
 }
 
-func (u *UserController) deleteUserById(ctx *gin.Context) {
-	r := u.UserService.DeleteUserById(ctx.Param("id"))
-	util.ResponseSuccess(ctx, r)
+func (u *UserController) deleteUserById(c *gin.Context) {
+	r := u.UserService.DeleteUserById(c.Param("id"))
+	util.ResponseSuccess(c, r)
 }
