@@ -42,7 +42,7 @@ func main() {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{QueryFields: true, PrepareStmt: true, Logger: logger.Default.LogMode(logger.Info)})
 	if err != nil {
-		log.Fatal("error occurred when trying to connect to database:", err)
+		log.Fatal("error occurred when try to connect to database:", err)
 	}
 
 	app := gin.New()
