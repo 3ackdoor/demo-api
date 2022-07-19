@@ -3,7 +3,7 @@ package controller
 import (
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/service"
-	"github.com/3ackdoor/go-demo-api/src/util"
+	"github.com/3ackdoor/go-demo-api/src/util/response"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,8 +38,7 @@ func (u *UserController) getAllUsers(c *gin.Context) {
 }
 
 func (u *UserController) getUserById(c *gin.Context) {
-	r := u.UserService.GetUserById(c.Param("id"))
-	util.ResponseSuccess(c, r)
+	response.Success(c, u.UserService.GetUserById(c.Param("id")))
 }
 
 func (u *UserController) createUser(c *gin.Context) {
@@ -48,8 +47,7 @@ func (u *UserController) createUser(c *gin.Context) {
 		panic(err)
 	}
 
-	r := u.UserService.CreateUser(reqBody)
-	util.ResponseSuccess(c, r)
+	response.Success(c, u.UserService.CreateUser(reqBody))
 }
 
 func (u *UserController) updateUserById(c *gin.Context) {
@@ -58,11 +56,9 @@ func (u *UserController) updateUserById(c *gin.Context) {
 		panic(err)
 	}
 
-	r := u.UserService.UpdateUserById(c.Param("id"), reqBody)
-	util.ResponseSuccess(c, r)
+	response.Success(c, u.UserService.UpdateUserById(c.Param("id"), reqBody))
 }
 
 func (u *UserController) deleteUserById(c *gin.Context) {
-	r := u.UserService.DeleteUserById(c.Param("id"))
-	util.ResponseSuccess(c, r)
+	response.Success(c, u.UserService.DeleteUserById(c.Param("id")))
 }
