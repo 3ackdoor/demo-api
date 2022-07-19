@@ -18,7 +18,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/* copied from original source for studying about framework's functionality... */
+/* ***************************************************************************
+// copied from original source for studying about framework's functionality...
+*************************************************************************** */ 
 var (
 	dunno     = []byte("???")
 	centerDot = []byte("·")

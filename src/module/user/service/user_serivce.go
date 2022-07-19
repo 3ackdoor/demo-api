@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/3ackdoor/go-demo-api/src/exception"
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 	"github.com/3ackdoor/go-demo-api/src/module/user/mapper"
@@ -38,7 +37,7 @@ func (u *UserServiceImpl) GetUsers() bool {
 
 func (u *UserServiceImpl) GetAllUsers() []dto.UserModel {
 	users := u.UserRepository.FindAll()
-	panic(exception.NewInternalServiceException("rise error"))
+	// panic(exception.NewValidationException("rise error"))
 
 	resp := mapper.MapUserEntitiesToUserModels(users)
 	return resp

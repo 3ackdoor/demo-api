@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"strings"
@@ -13,28 +14,36 @@ import (
 )
 
 const (
-	noWritten     = -1
-	defaultStatus = http.StatusOK
+	noWritten = -1
 )
 
-func ResponseHandler() gin.HandlerFunc {
+// ResponseWriterHandler is the implementation of http.ResponseWriter
+func ResponseWriterHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		/* Before Request */
 		w := NewResponseWriter(c.Writer)
 		c.Writer = w
 
-		/* Before Request */
 		c.Next()
+
 		/* After Request */
-		if strings.Contains(w.Header().Get("Content-Type"), gin.MIMEJSON) {
+		_, exists := c.Get("recovered")
+		log.Printf("recovered: %v ", exists)
+		if !exists && strings.Contains(w.Header().Get("Content-Type"), gin.MIMEJSON) {
 			data := w.Body.Bytes()
 			w.Body.Reset()
 
 			resp := NewJsonResponse(data)
-
 			body, err := json.Marshal(resp)
 			if err != nil {
-				panic(err.Error())
+				log.Printf("Something went wrong while encoding JSON: %v", err)
+				return
 			}
+
+			w.Body.Write(body)
+		} else {
+			body := w.Body.Bytes()
+			w.Body.Reset()
 
 			w.Body.Write(body)
 		}
@@ -49,7 +58,7 @@ type jsonResponse struct {
 }
 
 func NewJsonResponse(data any) *jsonResponse {
-	return &jsonResponse{http.StatusText(defaultStatus), data}
+	return &jsonResponse{http.StatusText(http.StatusOK), data}
 }
 
 func (j *jsonResponse) MarshalJSON() ([]byte, error) {
@@ -70,7 +79,7 @@ type responseWriter struct {
 
 func NewResponseWriter(w gin.ResponseWriter) *responseWriter {
 	return &responseWriter{
-		Response: w, status: defaultStatus, Body: &bytes.Buffer{},
+		Response: w, status: http.StatusOK, Body: &bytes.Buffer{},
 	}
 }
 

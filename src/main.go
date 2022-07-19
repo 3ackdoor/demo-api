@@ -48,8 +48,8 @@ func main() {
 	app := gin.New()
 	app.Use(
 		gin.Logger(),
-		middleware.ResponseHandler(),
-		gin.CustomRecovery(middleware.ErrorHandler()),
+		middleware.ResponseWriterHandler(),
+		gin.CustomRecovery(middleware.RecoveryWriterHandler()),
 	)
 
 	r := config.NewRoutes(app, db)
@@ -82,7 +82,11 @@ func run(r config.Route) *http.Server {
 	return srv
 }
 
-// ref: https://github.com/hlandau/service/issues/10 and https://github.com/golang/go/issues/9463
+// See references
+//
+// https://github.com/hlandau/service/issues/10
+//
+// https://github.com/golang/go/issues/9463
 func gracefulShutdown(srv *http.Server) {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
