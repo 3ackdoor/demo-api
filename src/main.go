@@ -42,7 +42,7 @@ func main() {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{QueryFields: true, PrepareStmt: true, Logger: logger.Default.LogMode(logger.Info)})
 	if err != nil {
-		log.Fatal("error occurred when try to connect to database:", err)
+		log.Fatal("Error occurred when try to connect to database:", err)
 	}
 
 	app := gin.New()
@@ -73,7 +73,7 @@ func run(r config.Route) *http.Server {
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("listen: %s\n", err)
+			log.Fatalf("Listen: %s\n", err)
 		}
 	}()
 
@@ -92,8 +92,7 @@ func gracefulShutdown(srv *http.Server) {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 
-	killSignal := <-quit
-	switch killSignal {
+	switch signal := <-quit; signal {
 	case syscall.SIGINT:
 		log.Print("Got SIGINT...")
 	case syscall.SIGTERM:
@@ -105,7 +104,7 @@ func gracefulShutdown(srv *http.Server) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal("Server Shutdown:", err)
+		log.Fatal("Server shutdown:", err)
 	}
 	log.Println("Server gracefully stopped")
 }
