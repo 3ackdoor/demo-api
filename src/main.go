@@ -106,5 +106,7 @@ func gracefulShutdown(srv *http.Server) {
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatal("Server shutdown:", err)
 	}
+
+	<-ctx.Done()
 	log.Println("Server gracefully stopped")
 }
