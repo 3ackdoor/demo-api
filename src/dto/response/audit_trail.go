@@ -1,4 +1,4 @@
-package dto
+package response
 
 import (
 	"github.com/3ackdoor/go-demo-api/src/type/null"
