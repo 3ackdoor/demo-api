@@ -1,12 +1,12 @@
-package dto
+package model
 
 import (
-	"github.com/3ackdoor/go-demo-api/src/dto/response"
+	baseModel "github.com/3ackdoor/go-demo-api/src/model"
 	"github.com/3ackdoor/go-demo-api/src/type/null"
 )
 
 type UserModel struct {
-	response.AuditTrail
+	baseModel.AuditTrail
 	ID        uint        `json:"id"`
 	FirstName string      `json:"firstName"`
 	LastName  string      `json:"lastName"`

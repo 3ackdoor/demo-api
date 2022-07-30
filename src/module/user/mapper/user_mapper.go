@@ -1,9 +1,10 @@
 package mapper
 
 import (
-	"github.com/3ackdoor/go-demo-api/src/dto/response"
+	baseModel "github.com/3ackdoor/go-demo-api/src/model"
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
+	"github.com/3ackdoor/go-demo-api/src/module/user/model"
 )
 
 func MapUserCreationRequestToUserEntity(r dto.UserCreationRequest) *entity.User {
@@ -22,9 +23,9 @@ func MapUserUpdationRequestToUserEntity(id uint, r dto.UserUpdationRequest, e *e
 	e.Age = r.Age
 }
 
-func MapUserEntityToUserModel(user entity.User) dto.UserModel {
-	return dto.UserModel{
-		AuditTrail: response.AuditTrail{
+func MapUserEntityToUserModel(user entity.User) model.UserModel {
+	return model.UserModel{
+		AuditTrail: baseModel.AuditTrail{
 			CreatedBy: user.CreatedBy,
 			UpdatedBy: user.UpdatedBy,
 			DeletedBy: user.DeletedBy,
@@ -41,8 +42,8 @@ func MapUserEntityToUserModel(user entity.User) dto.UserModel {
 	}
 }
 
-func MapUserEntitiesToUserModels(users []entity.User) []dto.UserModel {
-	var userModels []dto.UserModel
+func MapUserEntitiesToUserModels(users []entity.User) []model.UserModel {
+	var userModels []model.UserModel
 
 	for _, user := range users {
 		userModel := MapUserEntityToUserModel(user)

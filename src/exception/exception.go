@@ -35,8 +35,8 @@ type ErrorDetail struct {
 
 type ValidationErrorDetail struct {
 	Key         string
-	Value       any
 	Description string `json:"description,omitempty"`
+	Value       any
 }
 
 type InternalServiceException struct {

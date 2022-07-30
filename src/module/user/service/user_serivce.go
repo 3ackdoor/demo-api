@@ -5,6 +5,7 @@ import (
 	"github.com/3ackdoor/go-demo-api/src/module/user/dto"
 	"github.com/3ackdoor/go-demo-api/src/module/user/entity"
 	"github.com/3ackdoor/go-demo-api/src/module/user/mapper"
+	"github.com/3ackdoor/go-demo-api/src/module/user/model"
 	"github.com/3ackdoor/go-demo-api/src/module/user/repository"
 	"github.com/3ackdoor/go-demo-api/src/util"
 	"gorm.io/gorm"
@@ -12,11 +13,11 @@ import (
 
 type UserService interface {
 	GetUsers() bool
-	GetAllUsers() []dto.UserModel
-	GetUserById(string) dto.UserModel
-	CreateUser(dto.UserCreationRequest) dto.UserModel
-	UpdateUserById(string, dto.UserUpdationRequest) dto.UserModel
-	DeleteUserById(string) dto.UserModel
+	GetAllUsers() []model.UserModel
+	GetUserById(string) model.UserModel
+	CreateUser(dto.UserCreationRequest) model.UserModel
+	UpdateUserById(string, dto.UserUpdationRequest) model.UserModel
+	DeleteUserById(string) model.UserModel
 }
 
 type UserServiceImpl struct {
@@ -36,7 +37,7 @@ func (u *UserServiceImpl) GetUsers() bool {
 	return true
 }
 
-func (u *UserServiceImpl) GetAllUsers() []dto.UserModel {
+func (u *UserServiceImpl) GetAllUsers() []model.UserModel {
 	users := u.UserRepository.FindAll()
 	panic(exception.NewValidationException("rise error"))
 
@@ -44,7 +45,7 @@ func (u *UserServiceImpl) GetAllUsers() []dto.UserModel {
 	return resp
 }
 
-func (u *UserServiceImpl) GetUserById(id string) dto.UserModel {
+func (u *UserServiceImpl) GetUserById(id string) model.UserModel {
 	idVal := util.ConvertStringToUint(id)
 	user := u.UserRepository.FindById(uint(idVal))
 
@@ -52,7 +53,7 @@ func (u *UserServiceImpl) GetUserById(id string) dto.UserModel {
 	return resp
 }
 
-func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) dto.UserModel {
+func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) model.UserModel {
 	user := mapper.MapUserCreationRequestToUserEntity(request)
 	u.UserRepository.Save(user)
 
@@ -60,7 +61,7 @@ func (u *UserServiceImpl) CreateUser(request dto.UserCreationRequest) dto.UserMo
 	return resp
 }
 
-func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequest) dto.UserModel {
+func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequest) model.UserModel {
 	idVal := util.ConvertStringToUint(id)
 
 	user := u.UserRepository.FindById(idVal)
@@ -72,7 +73,7 @@ func (u *UserServiceImpl) UpdateUserById(id string, request dto.UserUpdationRequ
 	return resp
 }
 
-func (u *UserServiceImpl) DeleteUserById(id string) dto.UserModel {
+func (u *UserServiceImpl) DeleteUserById(id string) model.UserModel {
 	idVal := util.ConvertStringToUint(id)
 
 	user := new(entity.User)

@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/3ackdoor/go-demo-api/src/module/user/controller"
+	userCtrl "github.com/3ackdoor/go-demo-api/src/module/user/controller"
 	"github.com/3ackdoor/go-demo-api/src/module/user/service"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -18,7 +18,7 @@ func NewRoutes(app *gin.Engine, db *gorm.DB) Route {
 
 	v1 := r.Router.Group("/v1")
 
-	controller.NewUserController(v1, service.NewUserService(db))
+	userCtrl.NewUserController(v1, service.NewUserService(db))
 
 	return r
 }
