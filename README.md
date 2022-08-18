@@ -25,3 +25,7 @@ just type this command in CLI: `make run`
   - auto route mapping *(SUPER HARD)
   - refactor response util (use polymorphism)
   - ...
+
+## Related Article
+https://medium.com/@anewnurse/go-series-2-create-restapi-using-gin-and-gorm-9c24f3e37324 \
+https://medium.com/@anewnurse/go-series-3-domain-driven-design-ddd-f12707c68ea6
